@@ -12,7 +12,7 @@ const app = () => {
          resizeMode="cover"
          style={styles.image}
          >
-      <Text style={styles.text}>Fruits and Vegetables Quality Detection</Text>
+      <Text style={styles.title}>Fruits and Vegetables Quality Detection</Text>
 
       <Link href="/contact" style={{ marginHorizontal: 'auto' }} asChild>
           <Pressable style={styles.button}>
