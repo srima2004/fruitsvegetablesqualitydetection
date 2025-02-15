@@ -4,7 +4,16 @@ import { useState, useRef } from 'react';
 
 const CameraScreen = () => {
   const [cameraReady, setCameraReady] = useState(false);
+  const [hasPermission, setHasPermission] = useState(null);
   const cameraRef = useRef(null);
+
+  // Request camera permission on mount
+  useState(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
 
   const takePicture = async () => {
     if (cameraRef.current && cameraReady) {
@@ -13,11 +22,18 @@ const CameraScreen = () => {
     }
   };
 
+  if (hasPermission === null) {
+    return <View><Text>Requesting camera permission...</Text></View>;
+  }
+  if (hasPermission === false) {
+    return <View><Text>No access to camera</Text></View>;
+  }
+
   return (
     <View style={styles.container}>
       <Camera 
         style={styles.camera} 
-        ref={cameraRef} 
+        ref={(ref) => (cameraRef.current = ref)} 
         onCameraReady={() => setCameraReady(true)}
       />
       <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
