@@ -15,7 +15,9 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
+        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        headerShown: true,
+        headerTitleAlign:'center',
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
@@ -34,9 +36,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="Scan"
+        name="Sign-in/Login"
         options={{
-          title: 'Scan',
+          title: 'Sign-in/Login',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
