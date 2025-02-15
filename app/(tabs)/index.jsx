@@ -1,76 +1,72 @@
-import { View, Text,StyleSheet,ImageBackground,Pressable} from 'react-native'
-import { Link } from 'expo-router'
-import appicon from "@/assets/images/app-icon.png"
+import { View, Text, StyleSheet, ImageBackground, Pressable, Alert } from 'react-native';
+import { useState, useEffect } from 'react';
+import { Camera } from 'expo-camera';
+import { useRouter } from 'expo-router';
+import appicon from "@/assets/images/app-icon.png";
 
+const App = () => {
+  const [hasPermission, setHasPermission] = useState(null);
+  const router = useRouter();
 
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
 
-const app = () => {
+  const openCamera = () => {
+    if (hasPermission === null) {
+      return; 
+    }
+    if (hasPermission === false) {
+      Alert.alert("Camera permission is required to use this feature.");
+      return;
+    }
+
+    // Navigate to a new screen where the camera will be implemented
+    router.push('/CameraScreen');
+  };
+
   return (
     <View style={styles.container}>
-      <ImageBackground
-         source={appicon}
-         resizeMode="cover"
-         style={styles.image}
-         >
-    {/*  <Text style={styles.title}>Fruits and Vegetables Quality Detection</Text>*/}
-
-      <Link href="/Scan" style={{ marginHorizontal: 'auto' }} asChild>
-          <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>Scan</Text>
-          </Pressable>
-        </Link>
+      <ImageBackground source={appicon} resizeMode="cover" style={styles.image}>
+        <Pressable style={styles.button} onPress={openCamera}>
+          <Text style={styles.buttonText}>Scan</Text>
+        </Pressable>
       </ImageBackground>
-      
     </View>
-  )
-}
+  );
+};
 
-export default app
-const styles=StyleSheet.create(
-  {
-    container:{
-      flex:1,
-      flexDirection:'column',
-    },
-    image:{
-      width:'100%',
-      height:'100%',
-      flex:1,
-      resizeMode:'cover',
-      justifyContent:'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    },
-    title: {
-      color: 'white',
-      fontSize: 42,
-      textAlign:'center',
-      fontWeight: 'bold',
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      marginBottom: 300,
-    },
-    link: {
-      color: 'white',
-      fontSize: 42,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      textDecorationLine: 'underline',
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      padding: 4,
-    },
-    button: {
-      height: 60,
-      borderRadius: 20,
-      justifyContent: 'center',
-      backgroundColor: 'rgba(0,0,0,0.75)',
-      padding: 6,
-      marginTop: 400,
-    },
-    buttonText: {
-      color: 'white',
-      fontSize: 16,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      padding: 4,
-    }
-  }
-)
+export default App;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  },
+  button: {
+    height: 60,
+    borderRadius: 20,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.75)',
+    padding: 6,
+    marginTop: 400,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 4,
+  },
+});
