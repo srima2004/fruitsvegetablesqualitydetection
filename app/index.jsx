@@ -14,9 +14,9 @@ const app = () => {
          >
       <Text style={styles.title}>Fruits and Vegetables Quality Detection</Text>
 
-      <Link href="/contact" style={{ marginHorizontal: 'auto' }} asChild>
+      <Link href="/Scan" style={{ marginHorizontal: 'auto' }} asChild>
           <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>Contact Us</Text>
+            <Text style={styles.buttonText}>Scan</Text>
           </Pressable>
         </Link>
       </ImageBackground>
