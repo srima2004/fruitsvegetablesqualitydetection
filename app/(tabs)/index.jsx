@@ -12,7 +12,7 @@ const app = () => {
          resizeMode="cover"
          style={styles.image}
          >
-      <Text style={styles.title}>Fruits and Vegetables Quality Detection</Text>
+    {/*  <Text style={styles.title}>Fruits and Vegetables Quality Detection</Text>*/}
 
       <Link href="/Scan" style={{ marginHorizontal: 'auto' }} asChild>
           <Pressable style={styles.button}>
@@ -43,9 +43,10 @@ const styles=StyleSheet.create(
     title: {
       color: 'white',
       fontSize: 42,
+      textAlign:'center',
       fontWeight: 'bold',
       backgroundColor: 'rgba(0,0,0,0.5)',
-      marginBottom: 120,
+      marginBottom: 300,
     },
     link: {
       color: 'white',
@@ -62,6 +63,7 @@ const styles=StyleSheet.create(
       justifyContent: 'center',
       backgroundColor: 'rgba(0,0,0,0.75)',
       padding: 6,
+      marginTop: 400,
     },
     buttonText: {
       color: 'white',
