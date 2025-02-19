@@ -3,11 +3,12 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/FontAwesome";  
+import { useRouter } from "expo-router";  // ✅ Import useRouter for navigation
 
 export default function HomeScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [image, setImage] = useState(null);
-  const [camera, setCamera] = useState(null);
+  const router = useRouter();  // ✅ Use router for back navigation
 
   // Request Camera Permissions
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function HomeScreen() {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImage(result.uri);
       sendToBackend(result.uri);
     }
@@ -64,6 +65,11 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      {/* 🔙 Back Button - Goes to Previous Screen */}
+      <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+        <Text style={styles.backText}>← Back</Text>
+      </TouchableOpacity>
+
       <Text style={styles.title}>Home Screen</Text>
 
       {/* Camera Icon to Open Camera */}
@@ -84,6 +90,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#000",
+  },
+  backButton: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    padding: 10,
+  },
+  backText: {
+    fontSize: 18,
+    color: "#ecd4bf",
+    fontWeight: "bold",
   },
   title: {
     fontSize: 24,

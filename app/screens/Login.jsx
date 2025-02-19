@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
-import { Link, useRouter } from "expo-router";  // ✅ Import useRouter
+import { Link, useRouter } from "expo-router";  
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,42 +12,34 @@ export default function Login() {
   // Login Function
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      Alert.alert("Login Successful!");
+      console.log("Attempting login...");  // ✅ Debugging log
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log("Login Successful!", userCredential.user);  // ✅ Debugging log
+  
+      Alert.alert("Login Successful!", `Welcome ${userCredential.user.email}`);
+      router.replace("/screens/HomeScreen");  // ✅ Redirects after login
     } catch (error) {
+      console.error("Login Error:", error.message);  // ✅ Debugging log
       Alert.alert("Login Error", error.message);
     }
   };
+  
 
   return (
     <View style={styles.container}>
-      {/* 🔙 Back Button - Goes to Home Page */}
       <TouchableOpacity onPress={() => router.replace("/")} style={styles.backButton}>
         <Text style={styles.backText}>← Home</Text>
       </TouchableOpacity>
 
       <Text style={styles.title}>Login</Text>
 
-      <TextInput 
-        style={styles.input} 
-        placeholder="Email" 
-        value={email} 
-        onChangeText={setEmail} 
-        keyboardType="email-address"
-      />
-      <TextInput 
-        style={styles.input} 
-        placeholder="Password" 
-        value={password} 
-        onChangeText={setPassword} 
-        secureTextEntry
-      />
+      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} keyboardType="email-address"/>
+      <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry/>
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
-      {/* Link to Signup Page */}
       <Text style={styles.signupText}>Don't have an account?</Text>
       <Link href="/screens/Signup" asChild>
         <TouchableOpacity>
@@ -57,6 +49,7 @@ export default function Login() {
     </View>
   );
 }
+
 
 // Styles
 const styles = StyleSheet.create({
