@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { TextInput, Button, Text } from 'react-native-paper';
+import { TextInput, Button } from 'react-native-paper';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const LoginScreen = ({ navigation }) => {
+type RootStackParamList = {
+  Home: undefined;
+  Login: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
+
+const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,7 +29,7 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setPassword}
         style={styles.input}
       />
-      <Button mode="contained" onPress={() => Alert.alert('Login Pressed')}>
+      <Button mode="contained" onPress={() => navigation.navigate('Home')}>
         Login
       </Button>
     </View>
