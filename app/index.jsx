@@ -1,21 +1,19 @@
-import { LinearGradient } from "expo-linear-gradient";
 import { View, Animated, Text, Pressable, StyleSheet, ImageBackground } from "react-native";
 import { useEffect, useRef } from "react";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome"; 
+import { auth } from "./firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 import appicon from "@/assets/images/app-icon.png";
-import app from "./firebaseConfig";
-
-
 
 export default function Index() {
-  const textScaleAnim = useRef(new Animated.Value(0.5)).current; // Text starts small
-  const textOpacityAnim = useRef(new Animated.Value(0)).current; // Text starts invisible
-  const bottomNavOpacityAnim = useRef(new Animated.Value(0)).current; // Bottom icons invisible
+  const router = useRouter();
+  const textScaleAnim = useRef(new Animated.Value(0.5)).current; 
+  const textOpacityAnim = useRef(new Animated.Value(0)).current; 
+  const bottomNavOpacityAnim = useRef(new Animated.Value(0)).current; 
 
   useEffect(() => {
     Animated.sequence([
-      // Step 1: "FreshSense" text animation (Scale Up + Fade In)
       Animated.parallel([
         Animated.timing(textScaleAnim, {
           toValue: 1,
@@ -28,7 +26,6 @@ export default function Index() {
           useNativeDriver: true,
         }),
       ]),
-      // Step 2: Bottom Navigation Icons Fade In
       Animated.timing(bottomNavOpacityAnim, {
         toValue: 1,
         duration: 500,
@@ -37,47 +34,41 @@ export default function Index() {
     ]).start();
   }, []);
 
+  const handleHomePress = () => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push("/screens/HomeScreen");  // ✅ Allow only logged-in users
+      } else {
+        router.push("/screens/Login");  // ❌ Redirect to login
+      }
+    });
+  };
+
   return (
     <View style={styles.container}>
+      {/* App Icon (ImageBackground) */}
+      <ImageBackground source={appicon} style={styles.image} resizeMode="contain" />
+
       {/* Animated "FreshSense" Text */}
-      <Animated.Text 
-        style={[
-          styles.appName, 
-          { 
-            transform: [{ scale: textScaleAnim }],
-            opacity: textOpacityAnim,
-          }
-        ]}
-      >
+      <Animated.Text style={[styles.appName, { transform: [{ scale: textScaleAnim }], opacity: textOpacityAnim }]}>
         FreshSense
       </Animated.Text>
 
-      {/* App Icon (No animation applied) */}
-      <ImageBackground 
-        source={appicon} 
-        style={styles.image} 
-        resizeMode="cover" 
-      />
-
-      {/* Bottom Navigation Icons with Fade-in Effect */}
+      {/* Bottom Navigation Icons */}
       <Animated.View style={[styles.bottomNav, { opacity: bottomNavOpacityAnim }]}>
-        <Link href="/screens/HomeScreen" asChild>
-          <Pressable>
-            <Icon name="home" size={35} color="#ecd4bf" />
-          </Pressable>
-        </Link>
-  
-         <Link href="/screens/Login" asChild>  
+        <Pressable onPress={handleHomePress}>
+          <Icon name="home" size={35} color="#ecd4bf" />
+        </Pressable>
+
+        <Link href="/screens/Login" asChild>
           <Pressable>
             <Icon name="user" size={35} color="#ecd4bf" />
           </Pressable>
         </Link>
-
-
       </Animated.View>
     </View>
   );
-}
+}  
 
 const styles = StyleSheet.create({
   container: {

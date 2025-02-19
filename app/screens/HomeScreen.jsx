@@ -1,44 +1,47 @@
-import { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { useEffect, useState, useRef } from "react";
+import { View, Text, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { Camera } from "expo-camera";
-import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/FontAwesome";  
-import { useRouter } from "expo-router";  // ✅ Import useRouter for navigation
+import { useRouter } from "expo-router";
+import { auth } from "../firebaseConfig";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function HomeScreen() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [cameraOpen, setCameraOpen] = useState(false);
   const [image, setImage] = useState(null);
-  const router = useRouter();  // ✅ Use router for back navigation
+  const cameraRef = useRef(null);
+  const router = useRouter();
 
-  // Request Camera Permissions
+  // Check if user is logged in
   useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-
-  // Function to Open Camera and Take Picture
-  const takePicture = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    if (status !== "granted") {
-      alert("Camera permission is required!");
-      return;
-    }
-
-    let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+      if (!user) {
+        router.replace("/screens/Login");  // ✅ Redirect to Login if not logged in
+      }
     });
 
-    if (!result.canceled) {
-      setImage(result.uri);
-      sendToBackend(result.uri);
+    return unsubscribe; // Cleanup listener
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#ecd4bf" />;
+  }
+
+  // Function to Take Picture
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
+      setImage(photo.uri);
+      sendToBackend(photo.uri);
+      setCameraOpen(false);  // Close camera after taking a picture
     }
   };
 
-  // Function to Send Image to Backend
+  // Send Image to Backend
   const sendToBackend = async (imageUri) => {
     const formData = new FormData();
     formData.append("file", {
@@ -65,20 +68,39 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* 🔙 Back Button - Goes to Previous Screen */}
+      {/* 🔙 Back Button */}
       <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
         <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
 
-      <Text style={styles.title}>Home Screen</Text>
-
-      {/* Camera Icon to Open Camera */}
-      <TouchableOpacity onPress={takePicture} style={styles.cameraButton}>
-        <Icon name="camera" size={40} color="white" />
+      {/* Logout Button */}
+      <TouchableOpacity onPress={() => {
+        signOut(auth);
+        router.replace("/screens/Login"); // Redirect to Login after logout
+      }} style={styles.logoutButton}>
+        <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
 
-      {/* Show Captured Image */}
-      {image && <Image source={{ uri: image }} style={styles.preview} />}
+      {/* Show Live Camera Preview */}
+      {cameraOpen ? (
+        <Camera ref={cameraRef} style={styles.camera} type={Camera.Constants.Type.back}>
+          <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+            <Icon name="camera" size={30} color="white" />
+          </TouchableOpacity>
+        </Camera>
+      ) : (
+        <>
+          <Text style={styles.title}>Scan here</Text>
+
+          {/* Open Camera Button */}
+          <TouchableOpacity onPress={() => setCameraOpen(true)} style={styles.cameraButton}>
+            <Icon name="camera" size={40} color="white" />
+          </TouchableOpacity>
+
+          {/* Show Captured Image */}
+          {image && <Image source={{ uri: image }} style={styles.preview} />}
+        </>
+      )}
     </View>
   );
 }
@@ -102,11 +124,36 @@ const styles = StyleSheet.create({
     color: "#ecd4bf",
     fontWeight: "bold",
   },
+  logoutButton: {
+    position: "absolute",
+    top: 50,
+    right: 20,
+    padding: 10,
+    backgroundColor: "red",
+    borderRadius: 5,
+  },
+  logoutText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
+  },
   title: {
     fontSize: 24,
     color: "white",
     fontWeight: "bold",
     marginBottom: 20,
+  },
+  camera: {
+    flex: 1,
+    width: "100%",
+  },
+  captureButton: {
+    position: "absolute",
+    bottom: 20,
+    alignSelf: "center",
+    backgroundColor: "#432c1a",
+    padding: 15,
+    borderRadius: 50,
   },
   cameraButton: {
     backgroundColor: "#432c1a",
