@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { Provider as PaperProvider } from 'react-native-paper';  // ✅ Import PaperProvider
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -28,19 +29,21 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        {/* Main Tabs (if using tab navigation) */}
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> 
-        
-        {/* Add Login and Home Screens */}
-        <Stack.Screen name="login" options={{ title: "Login", headerShown: false }} />
-        <Stack.Screen name="home" options={{ title: "Home", headerShown: false }} />
-        
-        {/* Not Found Screen */}
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <PaperProvider>  {/* ✅ Wrap everything inside PaperProvider */}
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          {/* Main Tabs (if using tab navigation) */}
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> 
+          
+          {/* Add Login and Home Screens */}
+          <Stack.Screen name="login" options={{ title: "Login", headerShown: false }} />
+          <Stack.Screen name="home" options={{ title: "Home", headerShown: false }} />
+          
+          {/* Not Found Screen */}
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </PaperProvider>
   );
 }
