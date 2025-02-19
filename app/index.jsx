@@ -1,8 +1,9 @@
-import { View, Animated, Text, Pressable, StyleSheet } from "react-native";
+import { View, Animated, Text, Pressable, StyleSheet, ImageBackground } from "react-native";
 import { useEffect, useRef } from "react";
 import { Link } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome"; 
 import appicon from "@/assets/images/app-icon.png";
+import LinearGradient from "react-native-linear-gradient";
 
 export default function Index() {
   const textScaleAnim = useRef(new Animated.Value(0.5)).current; // Text starts small
@@ -35,18 +36,23 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      {/* Animated "FreshSense" Text */}
-      <Animated.Text 
-        style={[
-          styles.appName, 
-          { 
-            transform: [{ scale: textScaleAnim }],
-            opacity: textOpacityAnim,
-          }
-        ]}
+      {/* Animated "FreshSense" Text with Gradient */}
+      <LinearGradient 
+        colors={["#ecd4bf", "#c9a17f"]} // Gradient effect
+        style={styles.gradientText} 
       >
-        FreshSense
-      </Animated.Text>
+        <Animated.Text 
+          style={[
+            styles.appName, 
+            { 
+              transform: [{ scale: textScaleAnim }],
+              opacity: textOpacityAnim,
+            }
+          ]}
+        >
+          FreshSense
+        </Animated.Text>
+      </LinearGradient>
 
       {/* App Icon (No animation applied) */}
       <ImageBackground 
@@ -65,7 +71,7 @@ export default function Index() {
 
         <Link href="/screens/Login" asChild>
           <Pressable>
-            <Icon name="user" size={30} color="#ecd4bf" />
+            <Icon name="user" size={35} color="#ecd4bf" />
           </Pressable>
         </Link>
       </Animated.View>
@@ -80,18 +86,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#000",
   },
-  appName: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "##ecd4bf",
-    textAlign: "center",
-    letterSpacing: 2,
-    textTransform: "uppercase",
-    textShadowColor: "rgba(0, 0, 0, 0.3)",
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+  gradientText: {
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderRadius: 10, 
     position: "absolute",
-    top: 50, // Places the text at the top
+    top: 150,
+  },
+  appName: {
+    fontSize: 40, // Larger for elegance
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+    textTransform: "uppercase",
+    textShadowColor: "rgba(0, 0, 0, 0.4)",
+    textShadowOffset: { width: 3, height: 3 },
+    letterSpacing: 2,
   },
   image: {
     width: 200,
@@ -108,3 +118,4 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
+
