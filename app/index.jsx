@@ -66,12 +66,14 @@ export default function Index() {
             <Icon name="home" size={35} color="#ecd4bf" />
           </Pressable>
         </Link>
+  
+         <Link href="/screens/Login" asChild>  
+          <Pressable>
+            <Icon name="user" size={35} color="#ecd4bf" />
+          </Pressable>
+        </Link>
 
-        <Link href="/screens/Login" asChild> 
-         <Pressable>
-       <Icon name="user" size={35} color="#ecd4bf" />
-        </Pressable>
-       </Link>
+
       </Animated.View>
     </View>
   );

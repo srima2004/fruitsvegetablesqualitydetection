@@ -1,32 +1,32 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
-import { Link, useRouter } from "expo-router";  // ✅ Import useRouter
+import { Link, useRouter } from "expo-router";  // ✅ Import useRouter for navigation
 
-export default function Login() {
+export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();  // ✅ Use router for navigation
+  const router = useRouter();  // ✅ Use router for back navigation
 
-  // Login Function
-  const handleLogin = async () => {
+  // Signup Function
+  const handleSignup = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      Alert.alert("Login Successful!");
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert("Account Created Successfully!");
     } catch (error) {
-      Alert.alert("Login Error", error.message);
+      Alert.alert("Signup Error", error.message);
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* 🔙 Back Button - Goes to Home Page */}
-      <TouchableOpacity onPress={() => router.replace("/")} style={styles.backButton}>
-        <Text style={styles.backText}>← Home</Text>
+      {/* 🔙 Back Button */}
+      <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+        <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
 
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Sign Up</Text>
 
       <TextInput 
         style={styles.input} 
@@ -43,22 +43,22 @@ export default function Login() {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
+        <Text style={styles.buttonText}>Create Account</Text>
       </TouchableOpacity>
 
-      {/* Link to Signup Page */}
-      <Text style={styles.signupText}>Don't have an account?</Text>
-      <Link href="/screens/Signup" asChild>
+      {/* Link to Login Page */}
+      <Text style={styles.loginText}>Already have an account?</Text>
+      <Link href="/screens/Login" asChild>
         <TouchableOpacity>
-          <Text style={styles.signupLink}>Sign Up</Text>
+          <Text style={styles.loginLink}>Login</Text>
         </TouchableOpacity>
       </Link>
     </View>
   );
 }
 
-// Styles
+// Styles (same as Login.jsx)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 50,
+    top: 50,  // Adjust based on your UI
     left: 20,
     padding: 10,
   },
@@ -106,13 +106,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  signupText: {
-    marginTop: 10,
+  loginText: {
+    marginTop: 15,
     fontSize: 14,
     color: "#fff",
   },
-  signupLink: {
-    fontSize: 16,
+  loginLink: {
+    fontSize: 18,
     color: "#ecd4bf",
     fontWeight: "bold",
     marginTop: 5,
