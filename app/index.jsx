@@ -3,7 +3,8 @@ import { useEffect, useRef } from "react";
 import { Link } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome"; 
 import appicon from "@/assets/images/app-icon.png";
-import LinearGradient from "react-native-linear-gradient";
+import { LinearGradient } from "expo-linear-gradient";
+
 
 export default function Index() {
   const textScaleAnim = useRef(new Animated.Value(0.5)).current; // Text starts small
