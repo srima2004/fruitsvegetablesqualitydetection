@@ -1,15 +1,13 @@
-import { View, Text, ImageBackground, Pressable, StyleSheet } from "react-native";
+import { View, ImageBackground, Pressable, StyleSheet } from "react-native";
 import { Link } from "expo-router";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome"; // Import icons
 import appicon from "@/assets/images/app-icon.png";
 
 export default function Index() {
   return (
     <View style={styles.container}>
-      {/* App Name at the Top */}
       <Text style={styles.appName}>FreshSense</Text>
 
-      {/* Background Image */}
       <ImageBackground source={appicon} resizeMode="cover" style={styles.image} />
 
       {/* Bottom Navigation Icons */}
@@ -17,6 +15,7 @@ export default function Index() {
         <Link href="/screens/HomeScreen" asChild>
           <Pressable>
             <Icon name="home" size={35} color="caramel" />
+
           </Pressable>
         </Link>
 
@@ -33,9 +32,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingTop: 50, // Ensure text is at the top
+    justifyContent: "space-between",
   },
   appName: {
     position: "absolute",
@@ -44,11 +41,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     textAlign: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // Adds a dark background for visibility
+    backgroundColor: "rgba(0, 0, 0, 0.6)", // Optional: Adds a dark background for visibility
     padding: 10,
     borderRadius: 10,
     width: "100%",
   },
+  
   image: {
     width: "100%",
     height: "100%",
@@ -56,7 +54,7 @@ const styles = StyleSheet.create({
   },
   bottomNav: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     backgroundColor: "rgba(0,0,0,0.8)",
     paddingVertical: 10,
     position: "absolute",
