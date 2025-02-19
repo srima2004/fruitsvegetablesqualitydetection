@@ -1,22 +1,19 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Stack } from "expo-router";
+import { ThemeProvider } from "@react-navigation/native";
+import { DarkTheme, DefaultTheme } from "@react-navigation/native";
+import { useColorScheme } from "react-native";
 
-export default function RootLayout() {
+export default function Layout() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
-        {/* Home and Login Screens */}
-        <Stack.Screen name="screens/HomeScreen" options={{ title: "Home", headerShown: false }} />
-        <Stack.Screen name="screens/Login" options={{ title: "Login", headerShown: false }} />
-
-        {/* Not Found Page */}
-        <Stack.Screen name="+not-found" />
+        <Stack.Screen name="index" options={{ title: "Home", headerShown: false }} />
+        <Stack.Screen name="screens/HomeScreen" options={{ title: "Home" }} />
+        <Stack.Screen name="screens/Login" options={{ title: "Login" }} />
+        <Stack.Screen name="not-found" options={{ title: "Not Found" }} />
       </Stack>
-      <StatusBar style="auto" />
     </ThemeProvider>
   );
 }

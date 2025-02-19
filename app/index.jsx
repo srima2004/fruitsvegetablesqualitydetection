@@ -1,76 +1,47 @@
-import { View, Text,StyleSheet,ImageBackground,Pressable} from 'react-native'
-import { Link } from 'expo-router'
-import appicon from "@/assets/images/app-icon.png"
+import { View, Text, StyleSheet, ImageBackground, Pressable } from "react-native";
+import { Link } from "expo-router";
+import appicon from "@/assets/images/app-icon.png";
 
-
-
-const app = () => {
+export default function Index() {
   return (
     <View style={styles.container}>
-      <ImageBackground
-         source={appicon}
-         resizeMode="cover"
-         style={styles.image}
-         >
-    {/*  <Text style={styles.title}>Fruits and Vegetables Quality Detection</Text>*/}
-
-      <Link href="/Login" style={{ marginHorizontal: 'auto' }} asChild>
+      <ImageBackground source={appicon} resizeMode="cover" style={styles.image}>
+        <Link href="/screens/HomeScreen" asChild>
           <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>Scan</Text>
+            <Text style={styles.buttonText}>Go to Home</Text>
+          </Pressable>
+        </Link>
+
+        <Link href="/screens/Login" asChild>
+          <Pressable style={styles.button}>
+            <Text style={styles.buttonText}>Go to Login</Text>
           </Pressable>
         </Link>
       </ImageBackground>
-      
     </View>
-  )
+  );
 }
 
-export default app
-const styles=StyleSheet.create(
-  {
-    container:{
-      flex:1,
-      flexDirection:'column',
-    },
-    image:{
-      width:'100%',
-      height:'100%',
-      flex:1,
-      resizeMode:'cover',
-      justifyContent:'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    },
-    title: {
-      color: 'white',
-      fontSize: 42,
-      textAlign:'center',
-      fontWeight: 'bold',
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      marginBottom: 300,
-    },
-    link: {
-      color: 'white',
-      fontSize: 42,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      textDecorationLine: 'underline',
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      padding: 4,
-    },
-    button: {
-      height: 60,
-      borderRadius: 20,
-      justifyContent: 'center',
-      backgroundColor: 'rgba(0,0,0,0.75)',
-      padding: 6,
-      marginTop: 400,
-    },
-    buttonText: {
-      color: 'white',
-      fontSize: 16,
-      fontWeight: 'bold',
-      textAlign: 'center',
-      padding: 4,
-    }
-  }
-)
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: "rgba(0,0,0,0.75)",
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+  },
+});
