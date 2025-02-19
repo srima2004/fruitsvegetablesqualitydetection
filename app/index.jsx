@@ -7,7 +7,6 @@ import appicon from "@/assets/images/app-icon.png";
 export default function Index() {
   const textScaleAnim = useRef(new Animated.Value(0.5)).current; // Text starts small
   const textOpacityAnim = useRef(new Animated.Value(0)).current; // Text starts invisible
-  const iconScaleAnim = useRef(new Animated.Value(0.5)).current; // App icon starts small
   const bottomNavOpacityAnim = useRef(new Animated.Value(0)).current; // Bottom icons invisible
 
   useEffect(() => {
@@ -25,13 +24,7 @@ export default function Index() {
           useNativeDriver: true,
         }),
       ]),
-      // Step 2: App Icon Zooms in
-      Animated.timing(iconScaleAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-      // Step 3: Bottom Navigation Icons Fade In
+      // Step 2: Bottom Navigation Icons Fade In
       Animated.timing(bottomNavOpacityAnim, {
         toValue: 1,
         duration: 500,
@@ -55,10 +48,10 @@ export default function Index() {
         FreshSense
       </Animated.Text>
 
-      {/* App Icon with Zoom Animation */}
-      <Animated.Image 
+      {/* App Icon (No animation applied) */}
+      <ImageBackground 
         source={appicon} 
-        style={[styles.image, { transform: [{ scale: iconScaleAnim }] }]} 
+        style={styles.image} 
         resizeMode="cover" 
       />
 
@@ -66,13 +59,13 @@ export default function Index() {
       <Animated.View style={[styles.bottomNav, { opacity: bottomNavOpacityAnim }]}>
         <Link href="/screens/HomeScreen" asChild>
           <Pressable>
-            <Icon name="home" size={30} color="#D2691E" />
+            <Icon name="home" size={35} color="#ecd4bf" />
           </Pressable>
         </Link>
 
         <Link href="/screens/Login" asChild>
           <Pressable>
-            <Icon name="user" size={30} color="#D2691E" />
+            <Icon name="user" size={30} color="#ecd4bf" />
           </Pressable>
         </Link>
       </Animated.View>
@@ -90,14 +83,15 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: 32,
     fontWeight: "bold",
-    color: "#D2691E",
+    color: "##ecd4bf",
     textAlign: "center",
     letterSpacing: 2,
     textTransform: "uppercase",
     textShadowColor: "rgba(0, 0, 0, 0.3)",
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
-    marginBottom: 20,
+    position: "absolute",
+    top: 50, // Places the text at the top
   },
   image: {
     width: 200,
@@ -114,4 +108,3 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-
