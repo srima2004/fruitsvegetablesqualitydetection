@@ -1,9 +1,12 @@
-
+import { LinearGradient } from "expo-linear-gradient";
 import { View, Animated, Text, Pressable, StyleSheet, ImageBackground } from "react-native";
 import { useEffect, useRef } from "react";
 import { Link } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome"; 
 import appicon from "@/assets/images/app-icon.png";
+import app from "./firebaseConfig";
+
+
 
 export default function Index() {
   const textScaleAnim = useRef(new Animated.Value(0.5)).current; // Text starts small
@@ -64,11 +67,11 @@ export default function Index() {
           </Pressable>
         </Link>
 
-        <Link href="/screens/Login" asChild>
-          <Pressable>
-            <Icon name="user" size={35} color="#ecd4bf" />
-          </Pressable>
-        </Link>
+        <Link href="/screens/Login" asChild> 
+         <Pressable>
+       <Icon name="user" size={35} color="#ecd4bf" />
+        </Pressable>
+       </Link>
       </Animated.View>
     </View>
   );
@@ -82,16 +85,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   appName: {
+    fontSize:35,
     fontWeight: "bold",
-    color: "#ecd4bf",
+    backgroundColor:"#ecd4bf",
+    color: "black",
+    borderRadius:5,
     textAlign: "center",
     textTransform: "uppercase",
     textShadowColor: "rgba(0, 0, 0, 0.4)",
     textShadowOffset: { width: 3, height: 3 },
     textShadowRadius: 5,
-    letterSpacing: 2,
+    letterSpacing: 1,
+    padding:5,
     position: "absolute",
-    top: 10,
+    top: 200,
   },
   image: {
     width: 200,
