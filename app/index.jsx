@@ -1,17 +1,18 @@
+
 import { View, Animated, Text, Pressable, StyleSheet, ImageBackground } from "react-native";
 import { useEffect, useRef } from "react";
 import { Link } from "expo-router";
 import Icon from "react-native-vector-icons/FontAwesome"; 
-import { LinearGradient } from "expo-linear-gradient"; // ✅ Correct Expo import
 import appicon from "@/assets/images/app-icon.png";
 
 export default function Index() {
-  const textScaleAnim = useRef(new Animated.Value(0.5)).current;
-  const textOpacityAnim = useRef(new Animated.Value(0)).current;
-  const bottomNavOpacityAnim = useRef(new Animated.Value(0)).current;
+  const textScaleAnim = useRef(new Animated.Value(0.5)).current; // Text starts small
+  const textOpacityAnim = useRef(new Animated.Value(0)).current; // Text starts invisible
+  const bottomNavOpacityAnim = useRef(new Animated.Value(0)).current; // Bottom icons invisible
 
   useEffect(() => {
     Animated.sequence([
+      // Step 1: "FreshSense" text animation (Scale Up + Fade In)
       Animated.parallel([
         Animated.timing(textScaleAnim, {
           toValue: 1,
@@ -24,6 +25,7 @@ export default function Index() {
           useNativeDriver: true,
         }),
       ]),
+      // Step 2: Bottom Navigation Icons Fade In
       Animated.timing(bottomNavOpacityAnim, {
         toValue: 1,
         duration: 500,
@@ -33,7 +35,8 @@ export default function Index() {
   }, []);
 
   return (
-    <LinearGradient colors={["#000000", "#432c1a"]} style={styles.container}>
+    <View style={styles.container}>
+      {/* Animated "FreshSense" Text */}
       <Animated.Text 
         style={[
           styles.appName, 
@@ -46,12 +49,14 @@ export default function Index() {
         FreshSense
       </Animated.Text>
 
+      {/* App Icon (No animation applied) */}
       <ImageBackground 
         source={appicon} 
         style={styles.image} 
         resizeMode="cover" 
       />
 
+      {/* Bottom Navigation Icons with Fade-in Effect */}
       <Animated.View style={[styles.bottomNav, { opacity: bottomNavOpacityAnim }]}>
         <Link href="/screens/HomeScreen" asChild>
           <Pressable>
@@ -65,7 +70,7 @@ export default function Index() {
           </Pressable>
         </Link>
       </Animated.View>
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -74,18 +79,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#000",
   },
   appName: {
-    fontSize: 40,
     fontWeight: "bold",
     color: "#ecd4bf",
     textAlign: "center",
     textTransform: "uppercase",
     textShadowColor: "rgba(0, 0, 0, 0.4)",
     textShadowOffset: { width: 3, height: 3 },
+    textShadowRadius: 5,
     letterSpacing: 2,
     position: "absolute",
-    top: 150,
+    top: 10,
   },
   image: {
     width: 200,
