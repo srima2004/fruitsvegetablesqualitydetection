@@ -37,9 +37,9 @@ export default function Index() {
   const handleHomePress = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        router.push("/screens/HomeScreen");  // ✅ Allow only logged-in users
+        router.push("/screens/HomeScreen");  // Allow only logged-in users
       } else {
-        router.push("/screens/Login");  // ❌ Redirect to login
+        router.push("/screens/Login");  //  Redirect to login
       }
     });
   };

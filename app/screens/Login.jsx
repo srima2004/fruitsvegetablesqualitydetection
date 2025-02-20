@@ -15,7 +15,7 @@ export default function Login() {
     setError(""); // Reset error before new login attempt
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.replace("/screens/HomeScreen"); // ✅ Redirect to Home on success
+      router.replace("/screens/HomeScreen"); //  Redirect to Home on success
     } catch (error) {
       if (error.code === "auth/user-not-found") {
         setError("No account found. Please sign up.");

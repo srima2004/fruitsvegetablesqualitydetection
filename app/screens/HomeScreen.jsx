@@ -20,7 +20,7 @@ export default function HomeScreen() {
       setUser(user);
       setLoading(false);
       if (!user) {
-        router.replace("/screens/Login");  // ✅ Redirect to Login if not logged in
+        router.replace("/screens/Login");  // Redirect to Login if not logged in
       }
     });
 

@@ -15,7 +15,7 @@ export default function Signup() {
     setError(""); // Reset error before a new signup attempt
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      router.replace("/screens/HomeScreen"); // ✅ Redirect to Home on success
+      router.replace("/screens/HomeScreen"); //  Redirect to Home on success
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         setError("Email already in use. Try logging in.");
