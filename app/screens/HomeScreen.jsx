@@ -8,7 +8,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as FileSystem from "expo-file-system";
-
+import * as ImagePicker from "expo-image-picker";
 export default function HomeScreen() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -75,17 +75,24 @@ export default function HomeScreen() {
         pathname: "/ResultScreen",
         params: { image: imageUri, result: JSON.stringify(data) }
        });
-
-
-      // Navigate to ResultScreen with the captured image and response data
-      router.push({ pathname: "/screens/ResultScreen", params: { image: imageUri, result: JSON.stringify(data) } });
-
     } catch (error) {
       console.error("❌ Error uploading image:", error);
       Alert.alert("Error", "Failed to upload image.");
       setIsUploading(false); // Stop loading in case of an error
     }
   };
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        quality: 1,
+    });
+
+    if (!result.canceled) {
+        console.log("📤 Selected image:", result.assets[0].uri);
+        sendToBackend(result.assets[0].uri); // Send selected image to backend
+    }
+};
 
   const takePhoto = async () => {
     if (!cameraRef.current) {
@@ -140,9 +147,20 @@ export default function HomeScreen() {
           ) : (
             <>
               <Text style={styles.title}>Scan here</Text>
-              <TouchableOpacity onPress={() => setCameraOpen(true)} style={styles.cameraButton}>
-                <Icon name="camera" size={40} color="white" />
-              </TouchableOpacity>
+              <View style={styles.scanContainer}>
+    <TouchableOpacity onPress={() => setCameraOpen(true)} style={styles.cameraButton}>
+        <Icon name="camera" size={40} color="white" />
+    </TouchableOpacity>
+    <Text style={styles.scanText}>Scan here</Text> 
+
+    {/* Upload Image Button */}
+    <TouchableOpacity onPress={pickImage} style={styles.uploadButton}>
+        <Icon name="upload" size={30} color="white" />
+        <Text style={styles.uploadText}>Upload Image</Text>
+    </TouchableOpacity>
+</View>
+
+
             </>
           )}
         </>
@@ -158,6 +176,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
   },
+  scanContainer: {
+    alignItems: "center", // Centers icon and text
+    marginTop: 20, // Add spacing from top elements
+},
+scanText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#2a9d8f", // Matches button color
+    marginTop: 10, // Space between icon and text
+},
+uploadButton: {
+  bottom:-100,
+  backgroundColor: "#3b82f6", // Blue button
+  paddingVertical: 10,
+  paddingHorizontal: 15,
+  borderRadius: 8,
+  flexDirection: "row",
+  alignItems: "center",
+  marginTop: 20, // Spacing from camera button
+},
+uploadText: {
+  fontSize: 16,
+  fontWeight: "bold",
+  color: "white",
+  marginLeft: 8, // Space between icon and text
+},
+
+
   backButton: {
     position: "absolute",
     top: 50,
@@ -166,7 +212,7 @@ const styles = StyleSheet.create({
   },
   backText: {
     fontSize: 18,
-    color: "#f4a261",
+    color: "rgba(14, 137, 112, 0.98)",
     fontWeight: "bold",
   },
   logoutButton: {
@@ -201,7 +247,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 30,
     alignSelf: "center",
-    backgroundColor: "#f4a261",
+    backgroundColor: "rgba(14, 137, 133, 0.98)",
     padding: 15,
     borderRadius: 50,
   },

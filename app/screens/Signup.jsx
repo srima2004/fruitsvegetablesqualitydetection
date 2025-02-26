@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 28, 
     fontWeight: "bold", 
     marginBottom: 20, 
-    color: "rgba(14, 137, 14, 0.98)", 
+    color: "#0e890e", 
   },
 
   

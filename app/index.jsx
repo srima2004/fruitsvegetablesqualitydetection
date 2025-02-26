@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     fontFamily: "sans-serif",
     color: "green",
     marginVertical: 5,
-    textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 5,
     opacity: 0.9,
   },
