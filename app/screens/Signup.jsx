@@ -8,14 +8,21 @@ import Icon from "react-native-vector-icons/FontAwesome";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState(""); // New state for retyping password
   const [error, setError] = useState("");  
   const router = useRouter();
 
   const handleSignup = async () => {
     setError(""); // Reset error before a new signup attempt
+
+    if (password !== retypePassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      router.replace("/screens/HomeScreen"); //  Redirect to Home on success
+      router.replace("/screens/HomeScreen"); // Redirect to Home on success
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         setError("Email already in use. Try logging in.");
@@ -60,6 +67,18 @@ export default function Signup() {
         />
       </View>
 
+      {/* Retype Password Input */}
+      <View style={styles.inputContainer}>
+        <Icon name="lock" size={20} color="gray" style={styles.icon} />
+        <TextInput
+          style={styles.input}
+          placeholder="Retype Password"
+          value={retypePassword}
+          onChangeText={setRetypePassword}
+          secureTextEntry
+        />
+      </View>
+
       {/* Error Message UI */}
       {error !== "" && <Text style={styles.errorText}>{error}</Text>}
 
@@ -77,32 +96,89 @@ export default function Signup() {
   );
 }
 
-// Styles
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "black", padding: 20 },
-
-  backButton: { 
-    position: "absolute", 
-    top: 50, 
-    left: 20, 
-    padding: 10,
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white", 
+    padding: 20,
   },
 
-  title: { fontSize: 28, fontWeight: "bold", marginBottom: 20, color: "#ecd4bf" },
+  
+  backButton: { 
+    position: "absolute",
+    top: 50, 
+    left: 20,
+    backgroundColor: "rgba(14, 137, 14, 0.98)", 
+    padding: 10,
+    borderRadius: 20,
+  },
 
-  inputContainer: { flexDirection: "row", alignItems: "center", borderWidth: 1, borderColor: "#ccc", borderRadius: 10, backgroundColor: "#fff", marginBottom: 10, width: "100%", paddingHorizontal: 10 },
+  title: { 
+    fontSize: 28, 
+    fontWeight: "bold", 
+    marginBottom: 20, 
+    color: "rgba(14, 137, 14, 0.98)", 
+  },
 
-  input: { flex: 1, height: 50 },
+  
+  inputContainer: { 
+    flexDirection: "row", 
+    alignItems: "center", 
+    borderWidth: 1, 
+    borderColor: "#ccc", 
+    borderRadius: 10, 
+    backgroundColor: "#f9f9f9", 
+    marginBottom: 10, 
+    width: "100%", 
+    paddingHorizontal: 10 
+  },
 
-  icon: { marginRight: 10 },
+  input: { 
+    flex: 1, 
+    height: 50, 
+    color: "#333", 
+  },
 
-  errorText: { color: "red", marginBottom: 10, fontSize: 14 },
+  icon: { 
+    marginRight: 10, 
+    color: "rgba(14, 137, 14, 0.98)", 
+  },
 
-  button: { backgroundColor: "#ecd4bf", padding: 12, borderRadius: 10, alignItems: "center", width: "100%", marginBottom: 10 },
+ 
+  errorText: { 
+    color: "red", 
+    marginBottom: 10, 
+    fontSize: 14 
+  },
 
-  buttonText: { color: "black", fontSize: 18, fontWeight: "bold" },
+ 
+  button: { 
+    backgroundColor: "rgba(14, 137, 14, 0.98)", 
+    padding: 12, 
+    borderRadius: 10, 
+    alignItems: "center", 
+    width: "100%", 
+    marginBottom: 10 
+  },
 
-  loginText: { marginTop: 15, fontSize: 14, color: "#555" },
+  buttonText: { 
+    color: "black", 
+    fontSize: 18, 
+    fontWeight: "bold" 
+  },
 
-  loginLink: { fontSize: 18, color: "#ecd4bf", fontWeight: "bold", marginTop: 5 },
+  loginText: { 
+    marginTop: 15, 
+    fontSize: 14, 
+    color: "#777" 
+  },
+
+  loginLink: { 
+    fontSize: 18, 
+    color: "rgba(14, 137, 14, 0.98)", 
+    fontWeight: "bold", 
+    marginTop: 5 
+  },
 });

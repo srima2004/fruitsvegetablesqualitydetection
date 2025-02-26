@@ -13,6 +13,7 @@ export default function Layout() {
         <Stack.Screen name="screens/HomeScreen" options={{ title: "Home" ,headerShown: false}} />
         <Stack.Screen name="screens/Login" options={{ title: "Login",headerShown: false }} />
         <Stack.Screen name="screens/Signup" options={{ title: "Signup",headerShown: false }}/>
+        <Stack.Screen name="ResultScreen" options={{ title: "Result",headerShown: false }}/>
         <Stack.Screen name="not-found" options={{ title: "Not Found",headerShown: false }} />
       </Stack>
     </ThemeProvider>

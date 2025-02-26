@@ -30,9 +30,11 @@ export default function Login() {
   return (
     <View style={styles.container}>
       {/* 🔙 Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Icon name="arrow-left" size={24} color="white" />
-      </TouchableOpacity>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.replace("/")}>
+  <Icon name="arrow-left" size={24} color="white" />
+</TouchableOpacity>
+
+
 
       <Text style={styles.title}>Login</Text>
 
@@ -77,32 +79,91 @@ export default function Login() {
   );
 }
 
-// Styles
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "black", padding: 20 },
-  
+  container: { 
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    backgroundColor: "white", 
+    padding: 20 
+  },
+
   backButton: { 
     position: "absolute", 
     top: 50, 
     left: 20, 
-    padding: 10,
+    backgroundColor: "rgba(14, 137, 14, 0.98)",  
+    padding: 12, 
+    borderRadius: 50, // Make it circular  
   },
 
-  title: { fontSize: 28, fontWeight: "bold", marginBottom: 20, color: "#ecd4bf" },
+  title: { 
+    fontSize: 30, 
+    fontWeight: "bold", 
+    marginBottom: 30, 
+    color: "rgba(14, 137, 14, 0.98)" ,
+  },
 
-  inputContainer: { flexDirection: "row", alignItems: "center", borderWidth: 1, borderColor: "#ccc", borderRadius: 10, backgroundColor: "#fff", marginBottom: 10, width: "100%", paddingHorizontal: 10 },
+  inputContainer: { 
+    flexDirection: "row", 
+    alignItems: "center", 
+    borderWidth: 1, 
+    borderColor: "rgba(14, 137, 14, 0.98)", 
+    borderRadius: 12, 
+    backgroundColor: "white", 
+    marginBottom: 15, 
+    width: "100%", 
+    paddingHorizontal: 12, 
+    paddingVertical: 10, 
+    shadowColor: "#FFD700", 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.3, 
+    shadowRadius: 4,
+    elevation: 3,
+  },
 
-  input: { flex: 1, height: 50 },
+  input: { 
+    flex: 1, 
+    height: 50,
+    fontSize: 16,
+  },
 
-  icon: { marginRight: 10 },
+  icon: { 
+    marginRight: 12 ,
+    color: "rgba(14, 137, 14, 0.98)", 
+  },
 
-  errorText: { color: "red", marginBottom: 10, fontSize: 14 },
+  errorText: { 
+    color: "red", 
+    marginBottom: 15, 
+    fontSize: 14 
+  },
 
-  button: { backgroundColor: "#ecd4bf", padding: 12, borderRadius: 10, alignItems: "center", width: "100%", marginBottom: 10 },
+  button: { 
+    backgroundColor: "rgba(14, 137, 14, 0.98)", 
+    padding: 15, 
+    borderRadius: 12, 
+    alignItems: "center", 
+    width: "100%", 
+    marginBottom: 15 
+  },
 
-  buttonText: { color: "black", fontSize: 18, fontWeight: "bold" },
+  buttonText: { 
+    color: "#1a1a1a", 
+    fontSize: 18, 
+    fontWeight: "bold" 
+  },
 
-  signupText: { marginTop: 10, fontSize: 14, color: "#555" },
+  signupText: { 
+    marginTop: 15, 
+    fontSize: 14, 
+    color: "#bbb" 
+  },
 
-  signupLink: { fontSize: 16, color: "#ecd4bf", fontWeight: "bold", marginTop: 5 },
-});
+  signupLink: { 
+    fontSize: 16, 
+    color: "rgba(14, 137, 14, 0.98)", 
+    fontWeight: "bold", 
+    marginTop: 5 
+  },
+});  
