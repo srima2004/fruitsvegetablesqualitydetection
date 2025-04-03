@@ -57,10 +57,11 @@ export default function HomeScreen() {
     let fileType = fileName.split(".").pop();
     const formData = new FormData();
     formData.append("file", { uri: newPath, name: fileName, type: `image/${fileType}` });
+    const BASE_URL = "https://fruitsvegetablesqualitydetection-3.onrender.com";
 
     try {
       console.log("🚀 Sending request to backend...");
-      const response = await fetch("http://192.168.1.4:5000/predict", {
+      const response = await fetch(`${BASE_URL}/predict`, {
         method: "POST",
         body: formData,
         headers: {  Accept: "application/json" },
