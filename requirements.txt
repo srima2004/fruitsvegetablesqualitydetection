@@ -91,7 +91,6 @@ pycparser==2.22
 Pygments==2.19.1
 python-dateutil==2.9.0.post0
 python-json-logger==3.2.1
-pywinpty==2.0.15
 PyYAML==6.0.2
 pyzmq==26.2.1
 referencing==0.36.2
@@ -108,12 +107,8 @@ stack-data==0.6.3
 sympy==1.13.1
 tensorboard==2.18.0
 tensorboard-data-server==0.7.2
-tensorflow==2.18.0
+tensorflow-cpu==2.18.0  
 tensorflow-io-gcs-filesystem==0.31.0
-tensorflow_intel==2.18.0
-termcolor==2.5.0
-terminado==0.18.1
-tinycss2==1.4.0
 torch==2.6.0
 torchvision==0.21.0
 tornado==6.4.2
